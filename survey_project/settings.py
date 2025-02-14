@@ -25,14 +25,8 @@ SECRET_KEY = 'django-insecure-6o!4)i1oa^drly=gm)&&7269@5(se#!&+bq6mwsfw1h*bu8b90
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"  # Read from env, default to False
 
-ALLOWED_HOSTS = [
-    "survey-app.onrender.com",  # Production domain
-    "127.0.0.1",  # Localhost (for development)
-]
+ALLOWED_HOSTS = ['survey-app12.fly.dev', '127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://survey-app.onrender.com",  # Secure CSRF handling in production
-]
 
 
 
