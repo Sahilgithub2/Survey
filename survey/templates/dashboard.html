@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container mt-4">
+    <h2 class="text-center">Survey Response Dashboard</h2>
+
+    <!-- Line Chart for Survey Responses -->
+    <canvas id="surveyChart"></canvas>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var ctx = document.getElementById('surveyChart').getContext('2d');
+    var surveyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ survey_labels|safe }},  // X-axis (Survey Titles)
+            datasets: [{
+                label: 'Number of Responses',
+                data: {{ survey_counts|safe }},  // Y-axis (Response Counts)
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderWidth: 2,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+<div class="text-center mt-4">
+    <a href="{% url 'download_feedback' %}" class="btn btn-primary custom-btn">Download Your Feedback</a>
+</div>
+
+<style>
+    .custom-btn {
+        background-color: #007bff; /* Bootstrap primary blue */
+        color: white;
+        font-size: 18px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease-in-out;
+        display: inline-block;
+    }
+    
+    .custom-btn:hover {
+        background-color: #0056b3; /* Darker blue */
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+
+</style>
+
+{% endblock %}
+

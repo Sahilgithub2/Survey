@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<div class="survey-container">
+    <h1 class="survey-title">{{ survey.title }}</h1>
+    <p class="survey-description">{{ survey.description }}</p>
+
+    {% if questions %}
+    <form method="post" class="survey-form">
+        {% csrf_token %}
+        
+        {% for question in questions %}
+            <div class="question-container">
+                <label class="question-label">{{ question.text }}</label>
+                {% if question.question_type == "choice" %}
+                    {% for choice in question.choices.all %}
+                        <div class="choice-container">
+                            <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}" id="choice_{{ choice.id }}">
+                            <label for="choice_{{ choice.id }}">{{ choice.text }}</label>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <input type="text" name="question_{{ question.id }}" class="text-input" placeholder="Type your answer here...">
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+    {% else %}
+        <p class="no-questions">No questions available for this survey.</p>
+    {% endif %}
+</div>
+<style>
+    .survey-container {
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .survey-title {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    .survey-description {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+    
+    .survey-form {
+        text-align: left;
+    }
+    
+    .question-container {
+        background: #fff;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .question-text {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+        color: #444;
+    }
+    
+    .choice-options {
+        padding-left: 10px;
+    }
+    
+    .choice-label {
+        display: block;
+        margin: 5px 0;
+        font-size: 14px;
+    }
+    
+    .text-input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    
+    .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background: #007bff;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+    
+    .submit-btn:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+    }
+    
+    .no-questions {
+        font-size: 18px;
+        color: #888;
+    }
+    
+</style>
+
+{% endblock %}

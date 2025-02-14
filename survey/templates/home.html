@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{%load static%}
+{% block content %}
+    <h1>Available Surveys</h1>
+    {% for survey in surveys %}
+        <h3>{{ survey.title }}</h3>
+        <p>{{ survey.description }}</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'survey_detail' survey.id %}" class="take-survey-btn">Take Survey</a>
+        {% else %}
+            <a href="{% url 'login' %}?next={% url 'survey_detail' survey.id %}" class="btn btn-warning">Login to Take Survey</a>
+        {% endif %}
+
+    {% empty %}
+        <p>No surveys available.</p>
+    {% endfor %}
+
+    <style>
+        .take-survey-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        
+        .take-survey-btn:hover {
+            background-color: #0056b3;
+            box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .take-survey-btn:active {
+            background-color: #00408d;
+            transform: translateY(1px);
+        }
+
+        .btn-warning {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #ff9800;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e68900;
+            transform: scale(1.05);
+            box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-warning:active {
+            transform: scale(0.95);
+        }
+        
+    </style>
+
+{% endblock %}
