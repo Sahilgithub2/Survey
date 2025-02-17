@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-6o!4)i1oa^drly=gm)&&7269@5(se#!&+bq6mwsfw1h*bu8b90
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"  # Read from env, default to False
 
-ALLOWED_HOSTS = ['survey-app12.fly.dev', '127.0.0.1']
+ALLOWED_HOSTS = [".railway.app"]
 
 
 
@@ -124,7 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'staticfiles'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
 # Default primary key field type
