@@ -14,11 +14,6 @@ import os
 from pathlib import Path
 import environ
 import dj_database_url
-from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'survey_project.settings')
-
-application = get_wsgi_application()
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -32,7 +27,8 @@ DATABASE_URL = env('DATABASE_URL')# Explicitly point to .env
 # Read configurations
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="django-insecure-default-key")
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'survey-app.onrender.com', 'survey-app-no4y.onrender.com'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'survey-app-no4y.onrender.com'])
+
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging line to check value
 
 
@@ -43,12 +39,15 @@ DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://survey_db_cv70_user:be7no
 
 url = urlparse(DATABASE_URL)
 
-
-# Default database configuration using environment variables from Render
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://localhost:5432/survey_db'  # Default for local development
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'survey_db_cv70',
+        'USER': 'survey_db_cv70_user',
+        'PASSWORD': 'be7noF59HkwFdR7Fkck4LuheepRcGIEL',
+        'HOST': 'dpg-cuq5ohtsvqrc73f7htf0-a.singapore-postgres.render.com',  # Full hostname
+        'PORT': '5432',
+    }
 }
 
 
