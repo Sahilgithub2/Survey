@@ -14,6 +14,11 @@ import os
 from pathlib import Path
 import environ
 import dj_database_url
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'survey_project.settings')
+
+application = get_wsgi_application()
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -27,7 +32,7 @@ DATABASE_URL = env('DATABASE_URL')# Explicitly point to .env
 # Read configurations
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="django-insecure-default-key")
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['127.0.0.1', 'localhost', '0.0.0.0'])
+ALLOWED_HOSTS = env.list(ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'survey-app.onrender.com', 'survey-app-no4y.onrender.com'])
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging line to check value
 
 
@@ -38,15 +43,12 @@ DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://survey_db_cv70_user:be7no
 
 url = urlparse(DATABASE_URL)
 
+
+# Default database configuration using environment variables from Render
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'survey_db_cv70',
-        'USER': 'survey_db_cv70_user',
-        'PASSWORD': 'be7noF59HkwFdR7Fkck4LuheepRcGIEL',
-        'HOST': 'dpg-cuq5ohtsvqrc73f7htf0-a.singapore-postgres.render.com',  # Full hostname
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='postgres://localhost:5432/survey_db'  # Default for local development
+    )
 }
 
 
@@ -125,10 +127,12 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Security settings for production
+    # In production, ensure CSRF cookie is secure
 if not DEBUG:
-    CSRF_COOKIE_SECURE = True  # Ensure cookies are only sent over HTTPS
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'home'
