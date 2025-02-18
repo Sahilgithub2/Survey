@@ -32,7 +32,8 @@ SECRET_KEY = 'django-insecure-6o!4)i1oa^drly=gm)&&7269@5(se#!&+bq6mwsfw1h*bu8b90
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"  # Read from env, default to False
 
-ALLOWED_HOSTS = [".railway.app"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
 
 
 
@@ -130,10 +131,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles'),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
+STATICFILES_DIRS = [BASE_DIR / "static"]  # Keep this for development
+STATIC_ROOT = BASE_DIR / "staticfiles"    # Change this to avoid conflict
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
