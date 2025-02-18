@@ -32,7 +32,7 @@ DATABASE_URL = env('DATABASE_URL')# Explicitly point to .env
 # Read configurations
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="django-insecure-default-key")
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
-ALLOWED_HOSTS = env.list(ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'survey-app.onrender.com', 'survey-app-no4y.onrender.com'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'survey-app.onrender.com', 'survey-app-no4y.onrender.com'])
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging line to check value
 
 
