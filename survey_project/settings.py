@@ -15,16 +15,42 @@ from pathlib import Path
 import environ
 import dj_database_url
 
-env = environ.Env()
-environ.Env.read_env()  # Reads from .env file
+from dotenv import load_dotenv
+load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Load environment variables
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env()
+environ.Env.read_env()  # This loads the .env file
+DATABASE_URL = env('DATABASE_URL')# Explicitly point to .env
 
-# Quick-start development settings - unsuitable for production
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-default-key')
-DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".onrender.com"]
+# Read configurations
+SECRET_KEY = env("DJANGO_SECRET_KEY", default="django-insecure-default-key")
+DEBUG = env.bool("DJANGO_DEBUG", default=False)
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['127.0.0.1', 'localhost', '0.0.0.0'])
+
+
+from urllib.parse import urlparse
+
+DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://survey_db_cv70_user:be7noF59HkwFdR7Fkck4LuheepRcGIEL@dpg-cuq5ohtsvqrc73f7htf0-a.singapore-postgres.render.com/survey_db_cv70')
+
+url = urlparse(DATABASE_URL)
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'survey_db_cv70',
+        'USER': 'survey_db_cv70_user',
+        'PASSWORD': 'be7noF59HkwFdR7Fkck4LuheepRcGIEL',
+        'HOST': 'dpg-cuq5ohtsvqrc73f7htf0-a.singapore-postgres.render.com',  # Full hostname
+        'PORT': '5432',
+    }
+}
+
+
+
+
+print("DATABASE_URL:", os.getenv("DATABASE_URL"))
 
 # Application definition
 INSTALLED_APPS = [
@@ -68,13 +94,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'survey_project.wsgi.application'
 
 # Database configuration
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
-}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
