@@ -28,6 +28,8 @@ DATABASE_URL = env('DATABASE_URL')# Explicitly point to .env
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="django-insecure-default-key")
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['127.0.0.1', 'localhost', '0.0.0.0'])
+print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging line to check value
+
 
 
 from urllib.parse import urlparse
@@ -124,11 +126,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Security settings for production
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True  # Ensure cookies are only sent over HTTPS
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
+    SECURE_SSL_REDIRECT = True
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'home'
